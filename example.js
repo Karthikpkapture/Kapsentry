@@ -13,7 +13,7 @@ logger.createLog({
   responseTime: 95,
 });
 
-logger.triggerKapsentryAnalyticsLogEvents({
+logger.trackEvent({
   event: "user_signup",
   metadata: { userId: "u123" },
 });

@@ -10,7 +10,7 @@ class Kapsentry {
 
     this.projectId = projectId;
     this.apiKey = apiKey;
-    this.apiHost = apiHost.replace(/\/$/, ""); // remove trailing slash
+    this.apiHost = "https://api.kapsentry.com"; // remove trailing slash
   }
 
   async createLog(logData = {}) {
@@ -28,11 +28,11 @@ class Kapsentry {
         },
       });
     } catch (err) {
-      // Optionally log error: console.error('[Kapsentry] Log failed', err.message);
+      // Optionally log error: console.error('[Kapsentry] Log failed:', err.message);
     }
   }
 
-  async triggerKapsentryAnalyticsLogEvents(eventData = {}) {
+  async trackEvent(eventData = {}) {
     const payload = {
       projectId: this.projectId,
       timestamp: new Date().toISOString(),
@@ -48,7 +48,7 @@ class Kapsentry {
         },
       });
     } catch (err) {
-      // Optionally log error: console.error('[Kapsentry] Event log failed', err.message);
+      // Optionally log error: console.error('[Kapsentry] Event log failed:', err.message);
     }
   }
 }
