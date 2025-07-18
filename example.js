@@ -1,59 +1,39 @@
-// const { Kapsentry } = require("./src/Kapsentry");
+const { Kapsentry } = require("./kapsentry");
 
-// const logger = new Kapsentry({
-//   projectId: "abc123",
-//   apiKey: "xyz789",
-//   apiHost: "http://localhost:3000",
-// });
-
-// logger.createLog({
-//   method: "GET",
-//   path: "/api/test",
-//   status: 200,
-//   responseTime: 95,
-// });
-
-// logger.trackEvent({
-//   event: "user_signup",
-//   metadata: { userId: "u123" },
-// });
-
-const { Kapsentry } = require("kapsentry");
-
-// Initialize with minimal configuration
-const logger = new Kapsentry({
+// Replace these with your actual values
+const kapsentry = new Kapsentry({
   projectId: "your-project-id",
-  apiKey: "your-api-key",
+  apiKey: "your-api-key", // optional now
+  apiHost: "https://api.kapsentry.com",
 });
 
-// Or with advanced options
-const loggerWithOptions = new Kapsentry({
-  projectId: "your-project-id",
-  apiKey: "your-api-key",
-  apiHost: "https://your-custom-host.com", // optional
-  options: {
-    timeout: 10000,
-    retryAttempts: 5,
-    silent: true,
-    batchSize: 10,
-  },
-});
+async function testKapsentry() {
+  console.log("Sending log...");
+  const logResult = await kapsentry.createLog({
+    level: "info",
+    message: "Test log from Kapsentry client",
+    extra: { foo: "bar" },
+  });
 
-// Validate connection
-await logger.validateConnection();
+  if (logResult) {
+    console.log("✅ Log created:", logResult);
+  } else {
+    console.log("❌ Failed to create log");
+  }
 
-// Create logs with different levels
-await logger.createLog({ message: "User logged in", userId: "123" }, "info");
-await logger.createLog(
-  { message: "Operation failed", error: "Details" },
-  "error"
-);
+  console.log("Sending event...");
+  const eventResult = await kapsentry.trackEvent({
+    name: "test_event",
+    properties: { key1: "value1", key2: "value2" },
+  });
 
-// Track custom events
-await logger.trackEvent({
-  name: "button_click",
-  properties: {
-    buttonId: "submit",
-    page: "checkout",
-  },
+  if (eventResult) {
+    console.log("✅ Event tracked:", eventResult);
+  } else {
+    console.log("❌ Failed to track event");
+  }
+}
+
+testKapsentry().catch((err) => {
+  console.error("Unexpected error:", err);
 });
