@@ -13,13 +13,10 @@ class Kapsentry {
     }
 
     this.projectId = projectId;
-    this.apiKey = apiKey; // apiKey is optional per your request
-    this.apiHost = apiHost.replace(/\/+$/, ""); // remove trailing slash if any
+    this.apiKey = apiKey;
+    this.apiHost = apiHost.replace(/\/+$/, ""); // remove trailing slash
   }
 
-  /**
-   * Internal helper to POST to Kapsentry API
-   */
   async #post(path, payload) {
     const url = `${this.apiHost}${path}`;
     const headers = {
@@ -32,20 +29,15 @@ class Kapsentry {
 
     try {
       const response = await axios.post(url, payload, { headers });
-      // Optionally log: console.log(`[Kapsentry] Success: ${path}`, response.status);
+      console.log(`[Kapsentry] Sent log to: ${url}`, response.status);
       return response.data;
     } catch (err) {
-      // Optionally log: console.error(`[Kapsentry] Failed: ${path}`, err.message);
+      console.error(`[Kapsentry] Failed to send log to: ${url}`, err.message);
       return null;
     }
   }
 
-  /**
-   * Create a log
-   */
   async createLog(logData = {}) {
-    console.log("Sending log to:", `${this.config.apiHost}/api/log`);
-    console.log("Payload:", logData);
     const payload = {
       projectId: this.projectId,
       timestamp: new Date().toISOString(),
@@ -55,9 +47,6 @@ class Kapsentry {
     return this.#post("/log", payload);
   }
 
-  /**
-   * Track a custom event
-   */
   async trackEvent(eventData = {}) {
     const payload = {
       projectId: this.projectId,
