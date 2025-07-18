@@ -1,6 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
 
-class Kapsentry {
+export class Kapsentry {
   constructor({
     projectId,
     apiKey,
@@ -14,7 +14,7 @@ class Kapsentry {
 
     this.projectId = projectId;
     this.apiKey = apiKey;
-    this.apiHost = apiHost.replace(/\/+$/, ""); // remove trailing slash
+    this.apiHost = apiHost.replace(/\/+$/, "");
   }
 
   async #post(path, payload) {
@@ -29,10 +29,10 @@ class Kapsentry {
 
     try {
       const response = await axios.post(url, payload, { headers });
-      console.log(`[Kapsentry] Sent log to: ${url}`, response.status);
+      console.log(`[Kapsentry] Success: ${url}`, response.status);
       return response.data;
     } catch (err) {
-      console.error(`[Kapsentry] Failed to send log to: ${url}`, err.message);
+      console.error(`[Kapsentry] Failed: ${url}`, err.message);
       return null;
     }
   }
@@ -58,5 +58,3 @@ class Kapsentry {
     return this.#post("/event", payload);
   }
 }
-
-module.exports = { Kapsentry };

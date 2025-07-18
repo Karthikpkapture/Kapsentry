@@ -2,7 +2,8 @@
   "name": "kapsentry",
   "version": "0.1.5",
   "description": "SDK for logging API analytics and events to Kapsentry backend",
-  "main": "src/Kapsentry.js",
+  "main": "index.js",
+  "type": "module",
   "keywords": [
     "logging",
     "analytics",
