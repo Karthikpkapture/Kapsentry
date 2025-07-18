@@ -44,6 +44,8 @@ class Kapsentry {
    * Create a log
    */
   async createLog(logData = {}) {
+    console.log("Sending log to:", `${this.config.apiHost}/api/log`);
+    console.log("Payload:", logData);
     const payload = {
       projectId: this.projectId,
       timestamp: new Date().toISOString(),
